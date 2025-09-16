@@ -74,10 +74,10 @@ def add_service(master: str, serv_name: str, serv_pass: str, encoding: str ="utf
     blob_bytes = salt+nonce+tag+ciphertext
     blob = base64.b64encode(blob_bytes).decode(encoding)
     fm.add_serviceJSON(serv_name,blob)
-def delete_service(master: str, serv_name: str, encoding: str ="utf-8"):
+def delete_service(master: str, serv_name: str):
     if decrypt_and_verify(master, serv_name):
         fm.delete_serviceJSON(serv_name)
-def decrypt_and_verify(password: str, serv_name: str, encoding: str ="utf-8") -> bool:
+def decrypt_and_verify(password: str, serv_name: str) -> bool:
     if os.path.exists(fm.get_home() + "/" + fm.STORE_PATH + "/" + "pass.json"):
         data = fm.readJSON("pass.json")
     else:
@@ -92,11 +92,7 @@ def decrypt_and_verify(password: str, serv_name: str, encoding: str ="utf-8") ->
     cipher = AES.new(key,AES.MODE_EAX,nonce=n)
     try:
         cipher.decrypt_and_verify(ct, t)
-        #print ("Master is valid")
-        # pyclip.copy(plaintext.decode(encoding))
-        #print ("Here your password service called(in your clipboard): ",serv_name)
     except:
-        #print ("Blob or Master is invalid")
         return False
     return True
 def decrypt_and_CopyAES(password: str, serv_name: str, encoding: str ="utf-8"):
