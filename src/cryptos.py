@@ -55,7 +55,7 @@ def get_master(password: str, encoding: str = "utf-8") -> bytes | None:
     return master
 def _derived_key(password: str, salt:bytes, count=1200000):
    return PBKDF2(password,salt,32,count=count,hmac_hash_module=SHA512)
-def unpack_blob(blob, encoding: str ="utf-8"):
+def unpack_blob(blob):
     # blob_bytes = blob.encode(encoding)
     salt       = blob[:16]
     nonce      = blob[16:32]
